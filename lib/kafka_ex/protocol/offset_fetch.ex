@@ -1,4 +1,5 @@
 defmodule KafkaEx.Protocol.OffsetFetch do
+  require Logger
   alias KafkaEx.Protocol
   import KafkaEx.Protocol.Common
 
@@ -39,6 +40,11 @@ defmodule KafkaEx.Protocol.OffsetFetch do
 
   def parse_response(<< _correlation_id :: 32-signed, topics_size :: 32-signed, topics_data :: binary >>) do
     parse_topics(topics_size, topics_data, __MODULE__)
+  end
+  def parse_response(x) do
+    msg = "Unrecognized binary for parse_response: #{inspect x}"
+    Logger.error(msg)
+    raise msg
   end
 
   def parse_partitions(0, rest, partitions), do: {partitions, rest}
