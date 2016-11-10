@@ -179,6 +179,7 @@ defmodule KafkaEx.Server0P8P2 do
         Logger.log(:error, "Leader for topic #{fetch_request.topic} is not available")
         {:topic_not_found, state}
       _ ->
+        Logger.debug "Sending sync fetch request #{inspect fetch_data}"
         response = broker
           |> NetworkClient.send_sync_request(fetch_data, state.sync_timeout)
           |> Fetch.parse_response
