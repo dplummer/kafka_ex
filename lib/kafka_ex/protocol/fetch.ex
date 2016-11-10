@@ -1,4 +1,5 @@
 defmodule KafkaEx.Protocol.Fetch do
+  require Logger
   alias KafkaEx.Protocol
   alias KafkaEx.Compression
   import KafkaEx.Protocol.Common
@@ -35,6 +36,7 @@ defmodule KafkaEx.Protocol.Fetch do
 
   @spec create_request(Request.t) :: binary
   def create_request(fetch_request) do
+    Logger.debug "Fetch request: #{inspect fetch_request}"
     KafkaEx.Protocol.create_request(
       :fetch, fetch_request.correlation_id, fetch_request.client_id
     ) <>
